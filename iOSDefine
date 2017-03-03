@@ -1,0 +1,47 @@
+区分Debug状态
+#ifdef DEBUG
+#else
+#endif
+
+打印语句QLDEBUG Print | M:method, L:line, C:content
+#ifndef QLLog
+#ifdef DEBUG
+#define QLLog(FORMAT, ...) fprintf(stderr,"M:%s|L:%d|C->%s\n", __FUNCTION__, __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String])
+#else
+#define QLLog(FORMAT, ...)
+#endif
+#endif
+
+屏幕宽高
+#define QLScreenSize [[UIScreen mainScreen] bounds].size
+#define QLScreenWidth QLScreenSize.width
+#define QLScreenHeight QLScreenSize.height
+#define KeyBoardHeight QLScreenHeight==736?226:216
+
+界面宽高
+#define VIEWWIDTH self.view.frame.size.width
+#define VIEWHEIGHT self.view.frame.size.height
+
+颜色随机生成和格式转换
+#define QLColorWithRGB(redValue, greenValue, blueValue) ([UIColor colorWithRed:((redValue)/255.0) green:((greenValue)/255.0) blue:((blueValue)/255.0) alpha:1])
+#define QLColorRandom QLColorWithRGB(arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256))
+#define QLColorFromHex(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+
+常用系统变量
+/** Define a UserDefaults */
+#define QLUserDefaults [NSUserDefaults standardUserDefaults]
+
+/** Define a NotificationCenter */
+#define QLNotificationCenter [NSNotificationCenter defaultCenter]
+
+用户数据存储路径-Dcoument 存储用户数据或其它应该定期备份的信息。
+#define QLDirectoryDocumentPath NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0]
+//=[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"]
+
+用户数据存储路径-tmp 存放临时文件，保存应用程序再次启动过程中不需要的信息
+#define QLDirectoryTmpPath NSSearchPathForDirectoriesInDomains(NSTemporaryDirectory, NSUserDomainMask, YES)[0]
+//= [NSTemporaryDirectory() stringByAppendingPathComponent:@"tmp"];
+
+用户数据存储路径-Cache 存放应用程序专用的支持文件，保存应用程序再次启动过程中需要的信息
+#define QLDirectoryCachePath NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0]
+
