@@ -1,0 +1,37 @@
+
+
+AppDelegate.m
+    int cacheSizeMemory = 8 * 1024 * 1024; // 8MB
+    int cacheSizeDisk = 32 * 1024 * 1024; // 32MB
+    MyUrlCache *cache = [[MyUrlCache alloc] initWithMemoryCapacity:cacheSizeMemory diskCapacity:cacheSizeDisk diskPath:@"urlCache"];
+    [NSURLCache setSharedURLCache:cache];
+
+MyUrlCache.h
+#import <Foundation/Foundation.h>
+
+@interface MyUrlCache : NSURLCache
+
+@end
+
+MyUrlCache.m
+#import "MyUrlCache.h"
+
+@implementation MyUrlCache
+
+-(NSCachedURLResponse *)cachedResponseForRequest:(NSURLRequest *)request{
+    NSString *strURL = request.URL.absoluteString;
+    NSLog(@"cacheRequestURL:%@",strURL);
+    return nil;
+}
+-(void)storeCachedResponse:(NSCachedURLResponse *)cachedResponse forRequest:(NSURLRequest *)request{
+    NSString *strURL = request.URL.absoluteString;
+    NSLog(@"requestURL:%@",strURL);
+    
+    if ([strURL rangeOfString:@"/updatepass/"].location !=NSNotFound
+        && [strURL rangeOfString:@"?p1"].location == NSNotFound) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdatePassword" object:self userInfo:@{@"url":strURL}];
+    }
+    
+}
+
+@end
