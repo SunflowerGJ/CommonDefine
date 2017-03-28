@@ -3,6 +3,13 @@
 #else
 #endif
 
+判断是否引入某个类
+#if __has_include(<React/RCTBridgeModule.h>)
+#import <React/RCTBridgeModule.h>
+#else
+#import "RCTBridgeModule.h"
+#endif
+
 打印语句QLDEBUG Print | M:method, L:line, C:content
 #ifndef QLLog
 #ifdef DEBUG
